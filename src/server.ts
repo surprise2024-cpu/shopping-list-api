@@ -1,7 +1,7 @@
 import http, {IncomingMessage, ServerResponse} from 'http';
 import { songsRoute } from './routes/songs';
 
-const PORT = 4000;
+const PORT = 4001;
 
 const requestListener = (req: IncomingMessage, res: ServerResponse) => {
 

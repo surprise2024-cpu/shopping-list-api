@@ -3,8 +3,8 @@ import { IncomingMessage, ServerResponse } from "http";
 import { getAllSongs, getSongById, addSong } from "../controllers/songs";
 import { error } from "console";
 
-//http://localhost:4000/songs (songs endpoint)
-//http://localhost:4000/songs/:id (song by id endpoint)
+//http://localhost:4001/songs (songs endpoint)
+//http://localhost:4001/songs/:id (song by id endpoint)
 
 // Route handler for songs
 export const songsRoute = async (req: IncomingMessage, res: ServerResponse) => {
@@ -21,7 +21,7 @@ export const songsRoute = async (req: IncomingMessage, res: ServerResponse) => {
         const id = parts[2] ? parseInt(parts[2]) : undefined;
 
         // Handle GET request for a specific song by ID
-        if(req.method === 'GET' && !id) {
+        if(req.method === 'GET' && id === undefined) {
 
             // If no ID is provided, return all songs
             res.writeHead(200, { 'content-Type': 'application/json' });
@@ -33,7 +33,7 @@ export const songsRoute = async (req: IncomingMessage, res: ServerResponse) => {
         }
 
         // Handle GET request for a specific song by ID
-        if(req.method === 'GET' && id) {
+        if(req.method === 'GET' && id !== undefined) {
 
             //return;
             if (isNaN(id)) {
@@ -87,19 +87,22 @@ export const songsRoute = async (req: IncomingMessage, res: ServerResponse) => {
 
                     if (!title || typeof title !== 'string') {
                         res.writeHead(400, { 'content-Type': 'application/json' });
-                        res.end(JSON.stringify({ error: 'Song title is required!' }))
+                        res.end(JSON.stringify({ error: 'Song title is required!' }));
+                        return;
                     }
 
                     // 
                     if (!artist || typeof artist !== 'string') {
                         res.writeHead(400, { 'content-Type': 'application/json' });
-                        res.end(JSON.stringify({ error: 'Artist is required!' }))
+                        res.end(JSON.stringify({ error: 'Artist is required!' }));
+                        return;
                     }
 
                     // 
                     if (!duration || typeof duration !== 'number') {
                         res.writeHead(400, { 'content-Type': 'application/json' });
                         res.end(JSON.stringify({ error: 'Duration is required!' }))
+                        return;
                     }
 
                     // Call the addSong function to add the new song and get the created song object
