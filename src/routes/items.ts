@@ -1,6 +1,6 @@
 import { IncomingMessage, ServerResponse } from "http"; 
 
-import { getAllSongs, getSongById, addSong } from "../controllers/item";
+import { getAllSongs, getSongById, addSong } from "../controllers/items";
 import { error } from "console";
 
 //http://localhost:4001/songs (songs endpoint)

@@ -1,21 +1,21 @@
 import http, {IncomingMessage, ServerResponse} from 'http';
-import { songsRoute } from './routes/songs';
+import { itemRoute } from './routes/items';
 
 const PORT = 4001;
 
 const requestListener = (req: IncomingMessage, res: ServerResponse) => {
 
-    console.log(req.url, 'url');
+    console.log(`${req.method} ${req.url}`);
 
     // Check if the request URL starts with '/songs' and route accordingly
-    if(req.url?.startsWith('/songs')) {
-        songsRoute(req, res);
+    if(req.url?.startsWith('/items')) {
+        itemRoute(req, res);
     }
     else { // If the request URL does not match any specific route, return a default response
-        res.writeHead(200, {'content-type': 'application/json'});
-        res.end(JSON.stringify({ message: 'Hello World' }))
+        res.writeHead(404, {'content-type': 'application/json'});
+        res.end(JSON.stringify({ success: false, error: 'Route not found!' }));
     }
-}
+};
 
 // Create the HTTP server and listen on the specified port
 const server = http.createServer(requestListener);
