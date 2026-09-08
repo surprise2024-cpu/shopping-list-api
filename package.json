@@ -1,0 +1,25 @@
+{
+  "name": "shopping-list-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/surprise2024-cpu/shopping-list-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/surprise2024-cpu/shopping-list-api/issues"
+  },
+  "homepage": "https://github.com/surprise2024-cpu/shopping-list-api#readme",
+  "dependencies": {
+    "@types/node": "^26.5.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^7.0.2"
+  }
+}
