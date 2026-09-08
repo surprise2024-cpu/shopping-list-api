@@ -1,6 +1,6 @@
 import { IncomingMessage, ServerResponse } from "http"; 
 
-import { getAllSongs, getSongById, addSong } from "../controllers/songs";
+import { getAllSongs, getSongById, addSong } from "../controllers/item";
 import { error } from "console";
 
 //http://localhost:4001/songs (songs endpoint)
@@ -35,7 +35,7 @@ export const songsRoute = async (req: IncomingMessage, res: ServerResponse) => {
         // Handle GET request for a specific song by ID
         if(req.method === 'GET' && id !== undefined) {
 
-            //return;
+            
             if (isNaN(id)) {
                 res.writeHead(400, {'content-type': 'application/json'});
                 res.end(JSON.stringify({ error: 'Invalid song id' }));

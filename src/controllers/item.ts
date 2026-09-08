@@ -1,4 +1,4 @@
-import { Song } from '../types/songs';
+import { Song } from '../models/item';
 
 // In-memory storage for songs
 let songs: Song[] = []
