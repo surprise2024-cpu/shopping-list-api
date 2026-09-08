@@ -12,7 +12,7 @@ export const getAllSongs = (): Song[] => {
 }
 
 // Function to retrieve a song by its ID
-export const getSongByid = (id: number): Song | undefined => {
+export const getSongById = (id: number): Song | undefined => {
     const song = songs.find((song) => song.id === id);
     return song;
 }
