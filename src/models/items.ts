@@ -1,6 +1,6 @@
-export interface Song {
+export interface Item {
     id: number,
-    title: string,
-    artist: string,
-    duration: number,
+    name: string,
+    quantity: number,
+    purchased: boolean,
 }

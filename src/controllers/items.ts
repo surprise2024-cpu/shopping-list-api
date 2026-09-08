@@ -1,34 +1,81 @@
-import { Song } from '../models/items';
+import { Item } from '../models/items';
 
-// In-memory storage for songs
-let songs: Song[] = []
+// In-memory storage for items
+let items: Item[] = [];
 
-// Variable to keep track of the current ID for new songs
-let currentId = 0;
+// Variable to keep track of the current ID for new items
+let currentId = 1;
 
-// Function to retrieve all songs
-export const getAllSongs = (): Song[] => {
-    return songs;
+// Function to retrieve all items
+export const getAllItems = (): Item[] => {
+    return items;
 }
 
-// Function to retrieve a song by its ID
-export const getSongById = (id: number): Song | undefined => {
-    const song = songs.find((song) => song.id === id);
-    return song;
+// Function to retrieve an item by its ID
+export const getItemById = (id: number): Item | undefined => {
+    const item = items.find((item) => item.id === id);
+    return item;
 }
 
-// Function to add a new song
-export const addSong = (title: string, artist: string, duration: number ): Song => {
-    const newSong: Song = {
+// Function to add a new item
+export const addItem = (
+    name: string, 
+    quantity: number, 
+    purchased: boolean = false
+ ): Item => {
+    const newItem: Item = {
         id: currentId++,
-        title,
-        artist, 
-        duration
+        name,
+        quantity, 
+        purchased
+    };
+
+    items.push(newItem);
+
+    return newItem;
+};
+
+// updating an already existing item
+export const updateItem = (
+    id: number,
+    name?: string,
+    quantity?: number,
+    purchased?: boolean
+): Item | undefined => {
+
+    const item = items.find((item) => item.id === id);
+
+    if (!item) {
+        return undefined;
     }
 
-    songs.push(newSong);
+    if (name !== undefined) {
+        item.name = name;
+    }
 
-    return newSong;
-}
+    if (quantity !== undefined) {
+        item.quantity = quantity;
+    }
+
+    if (purchased !== undefined) {
+        item.purchased = purchased;
+    }
+
+    return item;
+};
+
+// Function to delete an item
+export const deleteItem = (id: number): boolean => {
+
+    const itemIndex = items.findIndex((item) => item.id === id);
+
+    if (itemIndex === -1) {
+        return false;
+    }
+
+    items.splice(itemIndex, 1);
+
+    return true;
+};
 
 

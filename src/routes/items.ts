@@ -1,16 +1,19 @@
 import { IncomingMessage, ServerResponse } from "http"; 
 
-import { getAllSongs, getSongById, addSong } from "../controllers/items";
-import { error } from "console";
+import { getAllItems, getItemById, addItem, updateItem, deleteItem } from "../controllers/items";
 
 //http://localhost:4001/songs (songs endpoint)
 //http://localhost:4001/songs/:id (song by id endpoint)
 
 // Route handler for songs
-export const songsRoute = async (req: IncomingMessage, res: ServerResponse) => {
+export const itemsRoute = async (
+    req: IncomingMessage, 
+    res: ServerResponse
+
+) => {
 
     // Check if the request URL starts with '/songs'
-    if(req.url?.startsWith('/songs')) {
+    if(req.url?.startsWith('/items')) {
         console.log(req.url, 'request url');
 
         // Split the URL into parts to extract the song ID if present
@@ -24,10 +27,17 @@ export const songsRoute = async (req: IncomingMessage, res: ServerResponse) => {
         if(req.method === 'GET' && id === undefined) {
 
             // If no ID is provided, return all songs
-            res.writeHead(200, { 'content-Type': 'application/json' });
+            res.writeHead(200, { 
+                'content-Type': 'application/json' 
+            });
 
             // Call the getAllSongs function to retrieve all songs
-            res.end(JSON.stringify(getAllSongs()));
+            res.end(
+                JSON.stringify({ 
+                    success: true, 
+                    data: getAllItems() 
+                })
+            );
 
             return;
         }
@@ -37,32 +47,57 @@ export const songsRoute = async (req: IncomingMessage, res: ServerResponse) => {
 
             
             if (isNaN(id)) {
-                res.writeHead(400, {'content-type': 'application/json'});
-                res.end(JSON.stringify({ error: 'Invalid song id' }));
+                res.writeHead(400, {
+                    'content-type': 'application/json'
+                });
+
+                res.end(
+                    JSON.stringify({ 
+                        success: false,
+                        error: 'Invalid item id' 
+                    })
+                );
 
                 return;
             }
 
-            const song = getSongById(id);
-            if (!song) {
-                res.writeHead(404, {'content-type': 'application/json'});
-                res.end(JSON.stringify({ error: 'Song not found' }));
+            const item = getItemById(id);
+
+            if (!item) {
+
+                res.writeHead(404, {
+                    'content-type': 'application/json'
+                });
+
+                res.end(
+                    JSON.stringify({ 
+                        success: false,
+                        error: 'Item not found' 
+                    })
+                );
 
                 return;
             }
 
             // If the song is found, return it; otherwise, return a 404 error
-            res.writeHead(200, { 'content-Type': 'application/json' });
+            res.writeHead(200, { 
+                'content-Type': 'application/json' 
+            });
 
             // Call the getSongById function to retrieve the song by ID
-            res.end(JSON.stringify(song));
+            res.end(
+                JSON.stringify({
+                    success: true,
+                    data: item
+                })
+            );
 
             return;
 
         }
 
         // Handle POST request to add a new song
-        if(req.method === 'POST') {
+        if(req.method === 'POST' && id === undefined) {
 
             let body = '';
 
@@ -83,40 +118,99 @@ export const songsRoute = async (req: IncomingMessage, res: ServerResponse) => {
                 try {
                     
                     // Parse the request body as JSON to extract song details
-                    const { title, artist, duration } = JSON.parse(body);
+                    const { 
+                        name, 
+                        quantity, 
+                        purchased 
+                    } = JSON.parse(body);
 
-                    if (!title || typeof title !== 'string') {
-                        res.writeHead(400, { 'content-Type': 'application/json' });
-                        res.end(JSON.stringify({ error: 'Song title is required!' }));
+                    if (
+                        !name || 
+                        typeof name !== 'string' ||
+                        name.trim() === ''
+                    ) {
+                        res.writeHead(400, { 
+                            'content-Type': 'application/json' 
+                        });
+
+                        res.end(
+                            JSON.stringify({ 
+                                success: false,
+                                error: 'Item name is required!' 
+                            })
+                        );
+
                         return;
                     }
 
                     // 
-                    if (!artist || typeof artist !== 'string') {
-                        res.writeHead(400, { 'content-Type': 'application/json' });
-                        res.end(JSON.stringify({ error: 'Artist is required!' }));
+                    if (typeof quantity !== 'number' ||
+                        quantity <= 0
+                    ) {
+                        res.writeHead(400, { 
+                            'content-Type': 'application/json' 
+                        });
+
+                        res.end(
+                            JSON.stringify({ 
+                                success: false,
+                                error: 'Quantity must be greater than 0' 
+                            })
+                        );
+
                         return;
                     }
 
                     // 
-                    if (!duration || typeof duration !== 'number') {
-                        res.writeHead(400, { 'content-Type': 'application/json' });
-                        res.end(JSON.stringify({ error: 'Duration is required!' }))
+                    if (
+                        purchased !== undefined &&
+                        typeof purchased !== 'boolean'
+                    ) {
+                        res.writeHead(400, { 
+                            'content-Type': 'application/json' 
+                        });
+
+                        res.end(
+                            JSON.stringify({ 
+                                success: false,
+                                error: 'Purchased must be a boolean' 
+                            })
+                        );
+
                         return;
                     }
 
                     // Call the addSong function to add the new song and get the created song object
-                    const newSong = addSong(title, artist, duration);
+                    const newItem = addItem(
+                        name.trim(), 
+                        quantity, 
+                        purchased ?? false
+                    );
 
                     // Return a 201 Created response with the newly added song
-                    res.writeHead(201, { 'content-Type': 'application/json' });
+                    res.writeHead(201, { 
+                        'content-Type': 'application/json'
+                    });
 
                     // Send the newly added song as the response
-                    res.end(JSON.stringify(newSong))
+                    res.end(
+                        JSON.stringify({
+                            success: true, 
+                            data: newItem
+                        })
+                    );
 
-                } catch (error) {
-                    res.writeHead(400, { 'content-Type': 'application/json' });
-                    res.end(JSON.stringify({ error: 'Invalid JSON payload' }))
+                } catch {
+                    res.writeHead(400, { 
+                        'content-Type': 'application/json' 
+                    });
+
+                    res.end(
+                        JSON.stringify({ 
+                            success: false,
+                            error: 'Invalid JSON payload' 
+                        })
+                    );
                 }
 
             });
@@ -124,8 +218,216 @@ export const songsRoute = async (req: IncomingMessage, res: ServerResponse) => {
             return;
         }
 
-        res.writeHead(405, { 'content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Method not allowed on /songs' }))
+        //
+        if (req.method === 'PUT' && id !== undefined) {
+
+            if (isNaN(id)) {
+
+                res.writeHead(400, {
+                    'content-type': 'application/json'
+                });
+
+                res.end(
+                    JSON.stringify({
+                        success: false,
+                        error: 'INvalid item id'
+                    })
+                );
+
+                return;
+            }
+
+            const existingItem = getItemById(id);
+
+            if (!existingItem) {
+
+                res.writeHead(404, {
+                    'content-type': 'application/json'
+                });
+
+                res.end(
+                    JSON.stringify({
+                        success: false,
+                        error: 'Item not found'
+                    })
+                );
+
+                return;
+            }
+
+            let body = '';
+
+            res.on('data', (chunk) => {
+                body += chunk.toString();
+            });
+
+            req.on('end', () => {
+
+                try {
+
+                    const {
+                        name, quantity, purchased
+                    } = JSON.parse(body);
+
+                    if (
+                        name !== undefined &&
+                        (
+                            typeof name !== 'string' ||
+                            name.trim() === ''
+                        )
+                    ) {
+
+                        res.writeHead(400, {
+                            'content-type': 'application/json'
+                        });
+
+                        res.end(
+                            JSON.stringify({
+                                success: false,
+                                error: 'Name must be not be an empty string'
+                            })
+                        );
+
+                        return;
+                    }
+
+                    if (
+                        quantity !== undefined && 
+                        (
+                            typeof quantity !== 'number' ||
+                            quantity <= 0
+                        )
+                    ) {
+
+                        res.writeHead(400, {
+                            'content-type': 'application/json'
+                        });
+
+                        res.end(
+                            JSON.stringify({
+                                success: false, 
+                                error: 'Quantity must be greater than 0'
+                            })
+                        );
+
+                        return;
+
+                    }
+
+                    if (
+                        purchased !== undefined &&
+                        typeof purchased !== 'boolean'
+                    ) {
+
+                        res.writeHead(400, {
+                            'content-type': 'application/json'
+                        });
+
+                        res.end(
+                            JSON.stringify({
+                                success: false,
+                                error: 'Purchased must be a boolean'
+                            })
+                        );
+
+                        return;
+
+                    }
+
+                    const updatedItem = updateItem(
+                        id, 
+                        name,
+                        quantity,
+                        purchased
+                    );
+
+                    res.writeHead(200, {
+                        'content-type': 'application/json'
+                    });
+
+                    res.end(
+                        JSON.stringify({
+                            success: true,
+                            data: updatedItem
+                        })
+                    );
+
+                } catch {
+
+                    res.writeHead(400, {
+                        'content-type': 'application/json'
+                    });
+
+                    res.end(
+                        JSON.stringify({
+                            success: false,
+                            error: 'Invalid JSON payload'
+                        })
+                    );
+
+                }
+            });
+
+            return;
+
+        }
+
+        // DELETE
+        if (req.method === 'DELETE' && id !== undefined) {
+
+            if (isNaN(id)) {
+
+                res.writeHead(400, {
+                    'content-type': 'application/json'
+                });
+
+                res.end(
+                    JSON.stringify({
+                        success: false,
+                        error: 'Invalid item id'
+                    })
+                );
+
+                return;
+            }
+
+            const deleted = deleteItem(id);
+
+            if (!deleted) {
+
+                res.writeHead(404, {
+                    'content-type': 'application/json'
+                });
+
+                res.end(
+                    JSON.stringify({
+                        success: false,
+                        error: 'Item not found!'
+                    })
+                );
+
+                return;
+
+            }
+
+            res.writeHead(204);
+
+            res.end();
+
+            return;
+
+        }
+
+        res.writeHead(405, { 
+            'content-Type': 'application/json' 
+        });
+
+        res.end(
+            JSON.stringify({ 
+                success: false,
+                error: 'Method not allowed on /items'
+            })
+        );
 
     }
-}
+};
