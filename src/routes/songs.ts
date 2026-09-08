@@ -1,6 +1,7 @@
 import { IncomingMessage, ServerResponse } from "http"; 
 
 import { getAllSongs, getSongById, addSong } from "../controllers/songs";
+import { error } from "console";
 
 //http://localhost:4000/songs (songs endpoint)
 //http://localhost:4000/songs/:id (song by id endpoint)
@@ -14,7 +15,7 @@ export const songsRoute = async (req: IncomingMessage, res: ServerResponse) => {
 
         // Split the URL into parts to extract the song ID if present
         const parts = req.url.split('/');
-        console.log(parts, 'request url parts');
+        console.log(parts, 'url parts');
 
         // Extract the song ID from the URL if it exists
         const id = parts[2] ? parseInt(parts[2]) : undefined;
@@ -34,13 +35,30 @@ export const songsRoute = async (req: IncomingMessage, res: ServerResponse) => {
         // Handle GET request for a specific song by ID
         if(req.method === 'GET' && id) {
 
+            //return;
+            if (isNaN(id)) {
+                res.writeHead(400, {'content-type': 'application/json'});
+                res.end(JSON.stringify({ error: 'Invalid song id' }));
+
+                return;
+            }
+
             const song = getSongById(id);
+            if (!song) {
+                res.writeHead(404, {'content-type': 'application/json'});
+                res.end(JSON.stringify({ error: 'Song not found' }));
+
+                return;
+            }
 
             // If the song is found, return it; otherwise, return a 404 error
-            res.writeHead(song ? 200 : 404, { 'content-Type': 'application/json' });
+            res.writeHead(200, { 'content-Type': 'application/json' });
 
             // Call the getSongById function to retrieve the song by ID
-            res.end(JSON.stringify(song || { message: 'Song not found' }));
+            res.end(JSON.stringify(song));
+
+            return;
+
         }
 
         // Handle POST request to add a new song
@@ -49,7 +67,7 @@ export const songsRoute = async (req: IncomingMessage, res: ServerResponse) => {
             let body = '';
 
             // Listen for data events to accumulate the request body
-            req.on('data', (chunk) => {
+            req.on("data", (chunk) => {
 
                 console.log(chunk, 'chunk');
 
@@ -63,16 +81,23 @@ export const songsRoute = async (req: IncomingMessage, res: ServerResponse) => {
             req.on('end', () => {
 
                 // Parse the request body as JSON to extract song details
-                const { title, artist, duration } = JSON.parse(body);
+                //const { title, artist, duration } = JSON.parse(body);
 
                 // Call the addSong function to add the new song and get the created song object
-                const newSong = addSong(title, artist, duration);
+                //const newSong = addSong(title, artist, duration);
 
                 // Return a 201 Created response with the newly added song
-                res.writeHead(201, { 'content-Type': 'application/json' });
+                //res.writeHead(201, { 'content-Type': 'application/json' });
 
                 // Send the newly added song as the response
-                res.end(JSON.stringify(newSong))
+                //res.end(JSON.stringify(newSong))
+
+                try {
+                    
+                } catch (error) {
+                    
+                }
+
             });
 
             return;
