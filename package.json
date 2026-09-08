@@ -1,16 +1,23 @@
 {
   "name": "shopping-list-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A REST API for managing shopping list items",
+  "main": "dist/server.js",
   "scripts": {
-    "dev": "nodemon --exec ts-node src/server.ts"
+    "dev": "nodemon --exec ts-node src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/surprise2024-cpu/shopping-list-api.git"
   },
-  "keywords": [],
+  "keywords": [
+    "node",
+    "typescript",
+    "rest-api",
+    "shopping-list"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {

@@ -2,36 +2,36 @@ import { IncomingMessage, ServerResponse } from "http";
 
 import { getAllItems, getItemById, addItem, updateItem, deleteItem } from "../controllers/items";
 
-//http://localhost:4001/songs (songs endpoint)
-//http://localhost:4001/songs/:id (song by id endpoint)
+//http://localhost:4001/items (items endpoint)
+//http://localhost:4001/items/:id (items by id endpoint)
 
-// Route handler for songs
-export const itemsRoute = async (
+// Route handler for items
+export const itemRoute = async (
     req: IncomingMessage, 
     res: ServerResponse
 
 ) => {
 
-    // Check if the request URL starts with '/songs'
+    // Check if the request URL starts with '/items'
     if(req.url?.startsWith('/items')) {
         console.log(req.url, 'request url');
 
-        // Split the URL into parts to extract the song ID if present
+        // Split the URL into parts to extract the item ID if present
         const parts = req.url.split('/');
         console.log(parts, 'url parts');
 
-        // Extract the song ID from the URL if it exists
+        // Extract the item ID from the URL if it exists
         const id = parts[2] ? parseInt(parts[2]) : undefined;
 
-        // Handle GET request for a specific song by ID
+        // Handle GET request for a specific item by ID
         if(req.method === 'GET' && id === undefined) {
 
-            // If no ID is provided, return all songs
+            // If no ID is provided, return all items
             res.writeHead(200, { 
                 'content-Type': 'application/json' 
             });
 
-            // Call the getAllSongs function to retrieve all songs
+            // Call the getAllItems function to retrieve all items
             res.end(
                 JSON.stringify({ 
                     success: true, 
@@ -42,7 +42,7 @@ export const itemsRoute = async (
             return;
         }
 
-        // Handle GET request for a specific song by ID
+        // Handle GET request for a specific itme by ID
         if(req.method === 'GET' && id !== undefined) {
 
             
@@ -79,12 +79,12 @@ export const itemsRoute = async (
                 return;
             }
 
-            // If the song is found, return it; otherwise, return a 404 error
+            // If the item is found, return it; otherwise, return a 404 error
             res.writeHead(200, { 
                 'content-Type': 'application/json' 
             });
 
-            // Call the getSongById function to retrieve the song by ID
+            // Call the getItemById function to retrieve the item by ID
             res.end(
                 JSON.stringify({
                     success: true,
@@ -96,7 +96,7 @@ export const itemsRoute = async (
 
         }
 
-        // Handle POST request to add a new song
+        // Handle POST request to add a new item
         if(req.method === 'POST' && id === undefined) {
 
             let body = '';
@@ -117,7 +117,7 @@ export const itemsRoute = async (
 
                 try {
                     
-                    // Parse the request body as JSON to extract song details
+                    // Parse the request body as JSON to extract item details
                     const { 
                         name, 
                         quantity, 
@@ -180,19 +180,19 @@ export const itemsRoute = async (
                         return;
                     }
 
-                    // Call the addSong function to add the new song and get the created song object
+                    // Call the addItem function to add the new item and get the created item object
                     const newItem = addItem(
                         name.trim(), 
                         quantity, 
                         purchased ?? false
                     );
 
-                    // Return a 201 Created response with the newly added song
+                    // Return a 201 Created response with the newly added item
                     res.writeHead(201, { 
                         'content-Type': 'application/json'
                     });
 
-                    // Send the newly added song as the response
+                    // Send the newly added item as the response
                     res.end(
                         JSON.stringify({
                             success: true, 
@@ -257,7 +257,7 @@ export const itemsRoute = async (
 
             let body = '';
 
-            res.on('data', (chunk) => {
+            req.on('data', (chunk) => {
                 body += chunk.toString();
             });
 
