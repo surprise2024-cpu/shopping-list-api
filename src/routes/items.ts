@@ -14,12 +14,10 @@ export const itemRoute = async (
 
     // Check if the request URL starts with '/items'
     if(req.url?.startsWith('/items')) {
-        console.log(req.url, 'request url');
 
         // Split the URL into parts to extract the item ID if present
         const parts = req.url.split('/');
-        console.log(parts, 'url parts');
-
+        
         // Extract the item ID from the URL if it exists
         const id = parts[2] ? parseInt(parts[2]) : undefined;
 
@@ -104,12 +102,9 @@ export const itemRoute = async (
             // Listen for data events to accumulate the request body
             req.on("data", (chunk) => {
 
-                console.log(chunk, 'chunk');
-
                 // Convert the chunk to a string and append it to the body
                 body += chunk.toString();
 
-                console.log(body, 'body');
             });
 
             // Listen for the end event to process the accumulated request body
