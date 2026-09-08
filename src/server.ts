@@ -15,9 +15,6 @@ const requestListener = (req: IncomingMessage, res: ServerResponse) => {
         res.writeHead(200, {'content-type': 'application/json'});
         res.end(JSON.stringify({ message: 'Hello World' }))
     }
-
-    
-
 }
 
 // Create the HTTP server and listen on the specified port

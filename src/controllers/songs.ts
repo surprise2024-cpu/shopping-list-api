@@ -4,7 +4,7 @@ import { Song } from '../types/songs';
 let songs: Song[] = []
 
 // Variable to keep track of the current ID for new songs
-let currentId = 1;
+let currentId = 0;
 
 // Function to retrieve all songs
 export const getAllSongs = (): Song[] => {
@@ -22,7 +22,8 @@ export const addSong = (title: string, artist: string, duration: number ): Song 
     const newSong: Song = {
         id: currentId++,
         title,
-        artist, duration
+        artist, 
+        duration
     }
 
     songs.push(newSong);

@@ -80,22 +80,40 @@ export const songsRoute = async (req: IncomingMessage, res: ServerResponse) => {
             // Listen for the end event to process the accumulated request body
             req.on('end', () => {
 
-                // Parse the request body as JSON to extract song details
-                //const { title, artist, duration } = JSON.parse(body);
-
-                // Call the addSong function to add the new song and get the created song object
-                //const newSong = addSong(title, artist, duration);
-
-                // Return a 201 Created response with the newly added song
-                //res.writeHead(201, { 'content-Type': 'application/json' });
-
-                // Send the newly added song as the response
-                //res.end(JSON.stringify(newSong))
-
                 try {
                     
+                    // Parse the request body as JSON to extract song details
+                    const { title, artist, duration } = JSON.parse(body);
+
+                    if (!title || typeof title !== 'string') {
+                        res.writeHead(400, { 'content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Song title is required!' }))
+                    }
+
+                    // 
+                    if (!artist || typeof artist !== 'string') {
+                        res.writeHead(400, { 'content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Artist is required!' }))
+                    }
+
+                    // 
+                    if (!duration || typeof duration !== 'number') {
+                        res.writeHead(400, { 'content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: 'Duration is required!' }))
+                    }
+
+                    // Call the addSong function to add the new song and get the created song object
+                    const newSong = addSong(title, artist, duration);
+
+                    // Return a 201 Created response with the newly added song
+                    res.writeHead(201, { 'content-Type': 'application/json' });
+
+                    // Send the newly added song as the response
+                    res.end(JSON.stringify(newSong))
+
                 } catch (error) {
-                    
+                    res.writeHead(400, { 'content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Invalid JSON payload' }))
                 }
 
             });
@@ -103,6 +121,8 @@ export const songsRoute = async (req: IncomingMessage, res: ServerResponse) => {
             return;
         }
 
+        res.writeHead(405, { 'content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Method not allowed on /songs' }))
 
     }
 }
