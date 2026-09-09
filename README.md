@@ -220,7 +220,7 @@ The `purchased` value is optional and it's automatically set to `false`.
 
 Retrieve all items from the list.
 
-![GET items](./src/assets/get-All-Items.png)
+![GET items](./src/assets/get-all-items.png)
 
 ---
 
@@ -268,7 +268,7 @@ Delete an item using its ID.
 
 Before:
 
-![Items before deletion](./src/assets/get-All-Items.png)
+![Items before deletion](./src/assets/get-all-items.png)
 
 
 Process:
