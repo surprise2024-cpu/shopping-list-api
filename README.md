@@ -154,7 +154,7 @@ http://localhost:4002
 
 ### Server Running 
 
-![Server Running](./src/assets/server-running.png)
+![Server Running](./src/assets/server-running2.png)
 
 ---
 
