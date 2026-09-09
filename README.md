@@ -383,7 +383,72 @@ Example response:
 
 ```
 
+### Validation Error in Postman
 
+Name validation:
+
+![Name validation](./src/assets/name-validation.png)
+
+Quantity validation: 
+
+![Quantity validation](./src/assets/qty-validation.png)
+
+Purchase validation:
+
+![Purchased validation](./src/assets/purch-validation.png)
+
+---
+
+## Error Handling
+
+The API returns appropriate HTTP status codes when errors occur.
+
+| Status | Meaning |
+|---|---|
+| `200 ok` | Request completed successfully |
+| `201 Created` | Item created successfully |
+| `204 No Content` | Item deleted successfully |
+| `400 Bad Request` | Invalid input |
+| `404 Not Found` | Item or route not found |
+| `405 Method Not Allowed` | HTTP method is not supported |
+
+---
+
+## Testing with Postman
+
+The API was tested using Postman.
+
+A recommended testing order is:
+
+1. Create am item using `POST /items`
+2. Retrieve all items using `GET /items`
+3. Retrieve one item using `GET /items/:id`
+4. Update the item using `PUT /items`
+5. Retrieve the item againto confirm the update.
+6. Delete the item using `DELETE /items/:id`
+7. Try retrieving the deleted item and confirm that `404` is returned.
+
+---
+
+## Recommended Test Case
+
+| Test | Expected Result |
+|---|---|
+| POST valid item | `201 Created` |
+| POST missing name | `400 Bad Request` |
+| POST quantity below 1 | `400 Bad Request` |
+| POST purchased with "yes/no" | `400 Bad Request` |
+| GET all items | `200 OK` |
+| GET existing item | `200 OK` |
+| GET missing item | `400 Bad Request` |
+| GET invalid id | `400 Bad Request` |
+| PUT existing item | `200 OK` |
+| PUT invalid data | `400 Bad Request` |
+| PUT missing item | `404 Not Found` |
+| DELETE existing item | `204 No Content` |
+| DELETE missing item | `404 Not Found` |
+
+---
 
 ## Author
 
