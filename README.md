@@ -293,6 +293,98 @@ Items after deletion:
 
 ---
 
+## Validation
+
+The API validates incoming request data.
+
+### Name validation
+
+The item name: 
+
+- is required when creating an item
+- must be a string
+- cannot be empty
+
+Invalid example:
+
+```JSON
+
+{
+    "name": "",
+    "quantity": 2
+}
+
+```
+
+---
+
+### Quantity Validation
+
+The quantity:
+
+- must be a number
+- must be greater than 0
+
+Invalid example:
+
+```JSON
+
+{
+    "name": "Milk",
+    "quantity": -5
+}
+
+```
+
+### Purchased Validation
+
+The `purchased` must be a boolean.
+
+Valid: 
+
+```JSON
+
+{
+    "purchased": true
+}
+
+```
+
+Invalid: 
+
+```JSON
+
+{
+    "purchased": "yes"
+}
+
+```
+
+---
+
+### Validation Error Example
+
+Status: 
+
+```text
+
+400 Bad Request
+
+```
+
+Example response:
+
+```JSON 
+
+{
+    "success": false,
+    "error": "Quantity must be greater than 0"
+}
+
+```
+
+
+
 ## Author
 
 Shopping List API built using Node.js and TypeScript.

@@ -6,7 +6,7 @@ import { getAllItems, getItemById, addItem, updateItem, deleteItem } from "../co
 //http://localhost:4001/items/:id (items by id endpoint)
 
 // Route handler for items
-export const itemRoute = async (
+export const itemsRoute = (
     req: IncomingMessage, 
     res: ServerResponse
 
@@ -19,7 +19,9 @@ export const itemRoute = async (
         const parts = req.url.split('/');
         
         // Extract the item ID from the URL if it exists
-        const id = parts[2] ? parseInt(parts[2]) : undefined;
+        const idPart = parts[2];
+
+        const id = idPart !== undefined ? Number(idPart) : undefined;
 
         // Handle GET request for a specific item by ID
         if(req.method === 'GET' && id === undefined) {
@@ -213,7 +215,7 @@ export const itemRoute = async (
             return;
         }
 
-        //
+        // PUT / Updating
         if (req.method === 'PUT' && id !== undefined) {
 
             if (isNaN(id)) {
@@ -225,7 +227,7 @@ export const itemRoute = async (
                 res.end(
                     JSON.stringify({
                         success: false,
-                        error: 'INvalid item id'
+                        error: 'Invalid item id'
                     })
                 );
 
@@ -279,7 +281,7 @@ export const itemRoute = async (
                         res.end(
                             JSON.stringify({
                                 success: false,
-                                error: 'Name must be not be an empty string'
+                                error: 'Name must not be an empty string'
                             })
                         );
 
@@ -397,7 +399,7 @@ export const itemRoute = async (
                 res.end(
                     JSON.stringify({
                         success: false,
-                        error: 'Item not found!'
+                        error: 'Item not found'
                     })
                 );
 

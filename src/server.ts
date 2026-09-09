@@ -1,5 +1,5 @@
 import http, {IncomingMessage, ServerResponse} from 'http';
-import { itemRoute } from './routes/items';
+import { itemsRoute } from './routes/items';
 
 const PORT = 4002;
 
@@ -9,7 +9,7 @@ const requestListener = (req: IncomingMessage, res: ServerResponse) => {
 
     // Check if the request URL starts with '/songs' and route accordingly
     if(req.url?.startsWith('/items')) {
-        itemRoute(req, res);
+        itemsRoute(req, res);
     }
     else { // If the request URL does not match any specific route, return a default response
         res.writeHead(404, {'content-type': 'application/json'});
