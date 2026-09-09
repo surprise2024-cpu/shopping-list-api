@@ -279,4 +279,5 @@ After:
 
 ![Items after deletion](./src/assets/deletion-complete.png)
 
+---
 
