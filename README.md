@@ -63,6 +63,7 @@ shopping-list-api
         server.ja.map
     node_module/
     src/
+        assets/
         controllers/
             items.ts
         models/
@@ -70,17 +71,12 @@ shopping-list-api
         routes/
             items.ts
         server.ts
-    assets/
     package-lock.json
     package.json
     README.md
     tsconfig.json
 
 ```
-
-### Project Structure Screenshot
-
-![Project Structure]()
 
 ---
 
@@ -105,6 +101,106 @@ export interface Item {
 | `purchased` | boolean | Shows whether the item ha been purchased |
 
 ---
+
+## Installation
+
+Clone the repository
+
+```bash
+
+git clone https://github.com/surprise2024-cpu/shopping-list-api.git
+
+```
+
+Move into the project folder:
+
+```bash
+
+cd shopping-list-api
+
+```
+
+Install dependencies
+
+```bash
+
+npm install
+
+```
+
+---
+
+## Running the Project
+
+To run the application in development mode:
+
+```bash
+
+npm run dev
+
+```
+
+The server runs on:
+
+```text
+
+http://localhost:4001
+
+```
+
+### Server Running 
+
+~[Server Running]()
+
+---
+
+## Build the project
+
+Compile the TypeScript project:
+
+```bash
+
+npm run build
+
+```
+
+Compile JavaScript file are generated inside the:
+
+```text
+
+dist/
+
+```
+
+folder.
+
+To run the compiled application:
+
+```bash
+
+npm start
+
+```
+
+---
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/items` | Add a new shopping list item |
+| GET | `/items` | Retrieve all shopping list items |
+| GET | `/items/:id` | Retrieve a single item by id  |
+| PUT | `/items/:id` | Update an existing item |
+| DELETE | `/items:id` | Delete an item |
+
+Base URL: 
+
+```text
+
+http://localhost:4001
+
+```
 
 
 
