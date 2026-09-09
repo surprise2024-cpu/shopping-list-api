@@ -224,7 +224,7 @@ Retrieve all items from the list.
 
 ---
 
-### GET single item
+### GET single item `screenshots`
 
 Retrieve Item 1:
 
@@ -236,7 +236,7 @@ Retrieve Item 2:
 
 ---
 
-### PUT /items/:id
+### PUT /items/:id `screenshots`
 
 Retrieve item by id the update that item.
 
@@ -254,15 +254,15 @@ After:
 
 Before:
 
-![Item 2 before Update](./src/assets/update-item-by-id2.png)
+![Item 2 before Update](./src/assets/get-item-by-id2.png)
 
 After:
 
-![item 2 after Update](./src/assets/update-item-by-id.png)
+![item 2 after Update](./src/assets/update-item-by-id2.png)
 
 ---
 
-### DELETE /items/:id
+### DELETE /items/:id `screenshots`
 
 Delete an item using its ID.
 
@@ -280,4 +280,6 @@ After:
 ![Items after deletion](./src/assets/deletion-complete.png)
 
 ---
+
+
 
