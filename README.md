@@ -232,21 +232,25 @@ Retrieve Item 1:
 
 Retrieve Item 2:
 
-![GET item2 by ID](./src/assets/get-item-by-id2.png)
+![GET item 2 by ID](./src/assets/get-item-by-id2.png)
 
 ---
 
 ### PUT /items/:id `screenshots`
 
-Retrieve item by id the update that item.
+Retrieve item by id then update that item.
 
 ---
 
 Before:
 
+Item 1 before update:
+
 ![Item 1 before Update](./src/assets/get-item-by-id.png)
 
 After:
+
+Item 1 after update:
 
 ![item 1 after Update](./src/assets/update-item-by-id.png)
 
@@ -254,9 +258,13 @@ After:
 
 Before:
 
+Item 2 before update:
+
 ![Item 2 before Update](./src/assets/get-item-by-id2.png)
 
 After:
+
+Item 1 after update:
 
 ![item 2 after Update](./src/assets/update-item-by-id2.png)
 
@@ -268,6 +276,8 @@ Delete an item using its ID.
 
 Before:
 
+Items before deletion:
+
 ![Items before deletion](./src/assets/get-all-items.png)
 
 
@@ -276,6 +286,8 @@ Process:
 ![Deletion by id](./src/assets/deletion.png)
 
 After:
+
+Items after deletion:
 
 ![Items after deletion](./src/assets/deletion-complete.png)
 
