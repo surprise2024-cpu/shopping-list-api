@@ -281,5 +281,9 @@ After:
 
 ---
 
+## Author
+
+Shopping List API built using Node.js and TypeScript.
+
 
 
