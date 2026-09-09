@@ -78,6 +78,10 @@ shopping-list-api
 
 ```
 
+### Project structure screenshot
+
+![Project structure](./src/assets/project-structure.png)
+
 ---
 
 ## Item Model
@@ -150,7 +154,7 @@ http://localhost:4001
 
 ### Server Running 
 
-~[Server Running]()
+![Server Running](./src/assets/server-running.png)
 
 ---
 
