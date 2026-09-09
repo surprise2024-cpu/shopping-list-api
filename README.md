@@ -228,7 +228,7 @@ Retrieve all items from the list.
 
 Retrieve Item 1:
 
-![GET item 1 by ID](./src/assets/get-item-by-id.png)
+[GET item 1 by ID](./src/assets/get-item-by-id.png)
 
 Retrieve Item 2:
 
