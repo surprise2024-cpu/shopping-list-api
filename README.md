@@ -168,7 +168,7 @@ npm run build
 
 ```
 
-Compile JavaScript file are generated inside the:
+Compiled JavaScript files are generated inside the:
 
 ```text
 
