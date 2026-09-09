@@ -148,7 +148,7 @@ The server runs on:
 
 ```text
 
-http://localhost:4001
+http://localhost:4002
 
 ```
 
@@ -202,9 +202,23 @@ Base URL:
 
 ```text
 
-http://localhost:4001
+http://localhost:4002
 
 ```
+
+---
+
+## POST /items `screenshot`
+
+![POST item](./src/assets/post-success.png)
+
+The `purchased` value is optional and it's automatical set to `false`
+
+## GET /items `screenshot`
+
+![GET items](./src/assets/post-success.png)
+
+
 
 
 

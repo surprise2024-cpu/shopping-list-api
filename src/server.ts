@@ -1,7 +1,7 @@
 import http, {IncomingMessage, ServerResponse} from 'http';
 import { itemRoute } from './routes/items';
 
-const PORT = 4001;
+const PORT = 4002;
 
 const requestListener = (req: IncomingMessage, res: ServerResponse) => {
 
