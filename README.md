@@ -397,6 +397,10 @@ Purchase validation:
 
 ![Purchased validation](./src/assets/purch-validation.png)
 
+Method validation:
+
+![Method validation](./src/assets/meth-validation.png)
+
 ---
 
 ## Error Handling
