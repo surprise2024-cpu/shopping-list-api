@@ -15,8 +15,8 @@ import {
 
 
 
-//http://localhost:4001/items (items endpoint)
-//http://localhost:4001/items/:id (items by id endpoint)
+//http://localhost:4002/items (items endpoint)
+//http://localhost:4002/items/:id (items by id endpoint)
 
 // Route handler for items
 export const itemsRoute = (
@@ -53,7 +53,10 @@ export const itemsRoute = (
         if(req.method === 'GET' && id !== undefined) {
 
             // valdite id
-            if (isNaN(id)) {
+            if (
+                !Number.isInteger(id) ||
+                id <= 0
+            ) {
          
                 sendError(
                     res,
@@ -190,7 +193,10 @@ export const itemsRoute = (
         // PUT / Updating
         if (req.method === 'PUT' && id !== undefined) {
 
-            if (isNaN(id)) {
+            if (
+                !Number.isInteger(id) ||
+                id <= 0
+            ) {
 
                 sendError(
                     res, 
@@ -310,7 +316,10 @@ export const itemsRoute = (
         // DELETE
         if (req.method === 'DELETE' && id !== undefined) {
 
-            if (isNaN(id)) {
+            if (
+                !Number.isInteger(id) ||
+                id <= 0
+            ) {
 
                 sendError(
                     res,
