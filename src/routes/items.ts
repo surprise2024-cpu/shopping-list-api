@@ -313,7 +313,7 @@ export const itemsRoute = (
 
         }
 
-        // DELETE
+        // DELETE /items/:id
         if (req.method === 'DELETE' && id !== undefined) {
 
             if (
