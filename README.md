@@ -208,17 +208,75 @@ http://localhost:4002
 
 ---
 
-## POST /items `screenshot`
+### POST /items `screenshot`
 
 ![POST item](./src/assets/post-success.png)
 
-The `purchased` value is optional and it's automatical set to `false`
+The `purchased` value is optional and it's automatically set to `false`.
 
-## GET /items `screenshot`
+---
 
-![GET items](./src/assets/post-success.png)
+### GET /items `screenshot`
+
+Retrieve all items from the list.
+
+![GET items](./src/assets/get-All-Items.png)
+
+---
+
+### GET single item
+
+Retrieve Item 1:
+
+![GET item1 by ID](./src/assets/get-item-by-id.png)
+
+Retrieve Item 2:
+
+![GET item2 by ID](./src/assets/get-item-by-id2.png)
+
+---
+
+### PUT /items/:id
+
+Retrieve item by id the update that item.
+
+---
+
+Before:
+
+![Item 1 before Update](./src/assets/get-item-by-id.png)
+
+After:
+
+![item 1 after Update](./src/assets/update-item-by-id.png)
+
+---
+
+Before:
+
+![Item 2 before Update](./src/assets/update-item-by-id2.png)
+
+After:
+
+![item 2 after Update](./src/assets/update-item-by-id.png)
+
+---
+
+### DELETE /items/:id
+
+Delete an item using its ID.
+
+Before:
+
+![Items before deletion](./src/assets/get-All-Items.png)
 
 
+Process:
 
+![Deletion by id](./src/assets/deletion.png)
+
+After:
+
+![Items after deletion](./src/assets/deletion-complete.png)
 
 
