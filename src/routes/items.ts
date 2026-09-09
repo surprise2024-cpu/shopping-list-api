@@ -1,16 +1,30 @@
 import { IncomingMessage, ServerResponse } from "http"; 
 
-import { getAllItems, getItemById, addItem, updateItem, deleteItem } from "../controllers/items";
+import { 
+    getAllItems, 
+    getItemById, 
+    addItem, 
+    updateItem, 
+    deleteItem 
+} from "../controllers/items";
+
+import { 
+    sendSuccess,
+    sendError
+} from '../utils/response'
+
+
 
 //http://localhost:4001/items (items endpoint)
 //http://localhost:4001/items/:id (items by id endpoint)
 
 // Route handler for items
 export const itemsRoute = (
+
     req: IncomingMessage, 
     res: ServerResponse
 
-) => {
+): void => {
 
     // Check if the request URL starts with '/items'
     if(req.url?.startsWith('/items')) {
@@ -26,17 +40,10 @@ export const itemsRoute = (
         // Handle GET request for a specific item by ID
         if(req.method === 'GET' && id === undefined) {
 
-            // If no ID is provided, return all items
-            res.writeHead(200, { 
-                'content-Type': 'application/json' 
-            });
-
-            // Call the getAllItems function to retrieve all items
-            res.end(
-                JSON.stringify({ 
-                    success: true, 
-                    data: getAllItems() 
-                })
+            sendSuccess(
+                res,
+                200, 
+                getAllItems()
             );
 
             return;
@@ -45,17 +52,13 @@ export const itemsRoute = (
         // Handle GET request for a specific itme by ID
         if(req.method === 'GET' && id !== undefined) {
 
-            
+            // valdite id
             if (isNaN(id)) {
-                res.writeHead(400, {
-                    'content-type': 'application/json'
-                });
-
-                res.end(
-                    JSON.stringify({ 
-                        success: false,
-                        error: 'Invalid item id' 
-                    })
+         
+                sendError(
+                    res,
+                    400,
+                    'Invalid item id'
                 );
 
                 return;
@@ -63,33 +66,22 @@ export const itemsRoute = (
 
             const item = getItemById(id);
 
+            // check if item exists
             if (!item) {
 
-                res.writeHead(404, {
-                    'content-type': 'application/json'
-                });
-
-                res.end(
-                    JSON.stringify({ 
-                        success: false,
-                        error: 'Item not found' 
-                    })
+                sendError(
+                    res,
+                    404,
+                    'Item not found'
                 );
 
                 return;
             }
 
-            // If the item is found, return it; otherwise, return a 404 error
-            res.writeHead(200, { 
-                'content-Type': 'application/json' 
-            });
-
-            // Call the getItemById function to retrieve the item by ID
-            res.end(
-                JSON.stringify({
-                    success: true,
-                    data: item
-                })
+            sendSuccess(
+                res,
+                200,
+                item
             );
 
             return;
@@ -121,57 +113,46 @@ export const itemsRoute = (
                         purchased 
                     } = JSON.parse(body);
 
+                    // valadite name
                     if (
                         !name || 
                         typeof name !== 'string' ||
                         name.trim() === ''
                     ) {
-                        res.writeHead(400, { 
-                            'content-Type': 'application/json' 
-                        });
 
-                        res.end(
-                            JSON.stringify({ 
-                                success: false,
-                                error: 'Item name is required!' 
-                            })
+                        sendError(
+                            res,
+                            400,
+                            'item name is required'
                         );
 
                         return;
                     }
 
-                    // 
+                    // validate quantity
                     if (typeof quantity !== 'number' ||
                         quantity <= 0
                     ) {
-                        res.writeHead(400, { 
-                            'content-Type': 'application/json' 
-                        });
-
-                        res.end(
-                            JSON.stringify({ 
-                                success: false,
-                                error: 'Quantity must be greater than 0' 
-                            })
+                        
+                        sendError(
+                            res,
+                            400,
+                            'Quantity must be greater than 0'
                         );
 
                         return;
                     }
 
-                    // 
+                    // Validate purchased
                     if (
                         purchased !== undefined &&
                         typeof purchased !== 'boolean'
                     ) {
-                        res.writeHead(400, { 
-                            'content-Type': 'application/json' 
-                        });
-
-                        res.end(
-                            JSON.stringify({ 
-                                success: false,
-                                error: 'Purchased must be a boolean' 
-                            })
+                 
+                        sendError(
+                            res,
+                            400,
+                            'Purchased must be a boolean'
                         );
 
                         return;
@@ -184,30 +165,21 @@ export const itemsRoute = (
                         purchased ?? false
                     );
 
-                    // Return a 201 Created response with the newly added item
-                    res.writeHead(201, { 
-                        'content-Type': 'application/json'
-                    });
-
-                    // Send the newly added item as the response
-                    res.end(
-                        JSON.stringify({
-                            success: true, 
-                            data: newItem
-                        })
+                    sendSuccess(
+                        res,
+                        201,
+                        newItem
                     );
+
 
                 } catch {
-                    res.writeHead(400, { 
-                        'content-Type': 'application/json' 
-                    });
 
-                    res.end(
-                        JSON.stringify({ 
-                            success: false,
-                            error: 'Invalid JSON payload' 
-                        })
+                    sendError(
+                        res,
+                        400,
+                        'Invalid JSON payload'
                     );
+                   
                 }
 
             });
@@ -220,15 +192,10 @@ export const itemsRoute = (
 
             if (isNaN(id)) {
 
-                res.writeHead(400, {
-                    'content-type': 'application/json'
-                });
-
-                res.end(
-                    JSON.stringify({
-                        success: false,
-                        error: 'Invalid item id'
-                    })
+                sendError(
+                    res, 
+                    400,
+                    'Invalid item id'
                 );
 
                 return;
@@ -238,15 +205,10 @@ export const itemsRoute = (
 
             if (!existingItem) {
 
-                res.writeHead(404, {
-                    'content-type': 'application/json'
-                });
-
-                res.end(
-                    JSON.stringify({
-                        success: false,
-                        error: 'Item not found'
-                    })
+                sendError(
+                    res,
+                    404,
+                    'Item not found'
                 );
 
                 return;
@@ -274,18 +236,14 @@ export const itemsRoute = (
                         )
                     ) {
 
-                        res.writeHead(400, {
-                            'content-type': 'application/json'
-                        });
-
-                        res.end(
-                            JSON.stringify({
-                                success: false,
-                                error: 'Name must not be an empty string'
-                            })
+                        sendError(
+                            res, 
+                            400,
+                            'Name must not be an empty string'
                         );
 
                         return;
+
                     }
 
                     if (
@@ -296,15 +254,10 @@ export const itemsRoute = (
                         )
                     ) {
 
-                        res.writeHead(400, {
-                            'content-type': 'application/json'
-                        });
-
-                        res.end(
-                            JSON.stringify({
-                                success: false, 
-                                error: 'Quantity must be greater than 0'
-                            })
+                        sendError(
+                            res,
+                            400,
+                            'Quantity must be greater than 0'
                         );
 
                         return;
@@ -316,15 +269,10 @@ export const itemsRoute = (
                         typeof purchased !== 'boolean'
                     ) {
 
-                        res.writeHead(400, {
-                            'content-type': 'application/json'
-                        });
-
-                        res.end(
-                            JSON.stringify({
-                                success: false,
-                                error: 'Purchased must be a boolean'
-                            })
+                        sendError(
+                            res,
+                            400,
+                            'Purchased must be a boolean (true/false)'
                         );
 
                         return;
@@ -338,28 +286,18 @@ export const itemsRoute = (
                         purchased
                     );
 
-                    res.writeHead(200, {
-                        'content-type': 'application/json'
-                    });
-
-                    res.end(
-                        JSON.stringify({
-                            success: true,
-                            data: updatedItem
-                        })
+                    sendSuccess(
+                        res, 
+                        200,
+                        updatedItem
                     );
 
                 } catch {
 
-                    res.writeHead(400, {
-                        'content-type': 'application/json'
-                    });
-
-                    res.end(
-                        JSON.stringify({
-                            success: false,
-                            error: 'Invalid JSON payload'
-                        })
+                    sendError(
+                        res, 
+                        400,
+                        'Invalid JSON payload'
                     );
 
                 }
@@ -374,33 +312,24 @@ export const itemsRoute = (
 
             if (isNaN(id)) {
 
-                res.writeHead(400, {
-                    'content-type': 'application/json'
-                });
-
-                res.end(
-                    JSON.stringify({
-                        success: false,
-                        error: 'Invalid item id'
-                    })
+                sendError(
+                    res,
+                    400,
+                    'Invalid item id'
                 );
 
                 return;
+
             }
 
             const deleted = deleteItem(id);
 
             if (!deleted) {
 
-                res.writeHead(404, {
-                    'content-type': 'application/json'
-                });
-
-                res.end(
-                    JSON.stringify({
-                        success: false,
-                        error: 'Item not found'
-                    })
+                sendError(
+                    res,
+                    404,
+                    'Item not found'
                 );
 
                 return;
@@ -415,16 +344,12 @@ export const itemsRoute = (
 
         }
 
-        res.writeHead(405, { 
-            'content-Type': 'application/json' 
-        });
-
-        res.end(
-            JSON.stringify({ 
-                success: false,
-                error: 'Method not allowed on /items'
-            })
+        sendError(
+            res,
+            405,
+            'Method not allowed on /items'
         );
 
     }
+
 };
