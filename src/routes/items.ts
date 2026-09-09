@@ -231,7 +231,10 @@ export const itemsRoute = (
                 try {
 
                     const {
-                        name, quantity, purchased
+                        name, 
+                        quantity, 
+                        purchased
+                        
                     } = JSON.parse(body);
 
                     if (
