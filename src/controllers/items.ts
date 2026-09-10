@@ -81,13 +81,15 @@ export const deleteItem = (id: number): boolean => {
 
     // itemIndex returns -1 if item wasn't found in the array
     if (itemIndex === -1) {
-        
+
         //tells application that nothing was deleted
         return false;
     }
 
+    // .splice() removes an item from the array depending on its index
     items.splice(itemIndex, 1);
 
+    // deletion succeeded
     return true;
 };
 
