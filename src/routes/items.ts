@@ -1,5 +1,8 @@
+// Incoming message represents the request coming into the server.
+// ServerResponse represents the response your server sends back.
 import { IncomingMessage, ServerResponse } from "http"; 
 
+// importing my controller functions
 import { 
     getAllItems, 
     getItemById, 
@@ -8,11 +11,11 @@ import {
     deleteItem 
 } from "../controllers/items";
 
+// import my helper functions
 import { 
     sendSuccess,
     sendError
 } from '../utils/response'
-
 
 
 //http://localhost:4002/items (items endpoint)
@@ -21,9 +24,10 @@ import {
 // Route handler for items
 export const itemsRoute = (
 
-    req: IncomingMessage, 
-    res: ServerResponse
+    req: IncomingMessage, // Incoming data request
+    res: ServerResponse // Response depending on the request
 
+    // function does not return a value
 ): void => {
 
     // Check if the request URL starts with '/items'
@@ -35,32 +39,35 @@ export const itemsRoute = (
         // Extract the item ID from the URL if it exists
         const idPart = parts[2];
 
+        // convert id from text into a number
         const id = idPart !== undefined ? Number(idPart) : undefined;
 
-        // Handle GET request for a specific item by ID
+        // Handle GET request items
         if(req.method === 'GET' && id === undefined) {
 
             sendSuccess(
                 res,
-                200, 
+                200, // Ok
                 getAllItems()
             );
 
+            // stops the route function
             return;
         }
 
-        // Handle GET request for a specific itme by ID
+        // Handle GET request for a specific item by ID
         if(req.method === 'GET' && id !== undefined) {
 
-            // valdite id
+            // valdites id
             if (
+                // checks whether id is a whole number (1 -> etc)
                 !Number.isInteger(id) ||
                 id <= 0
             ) {
          
                 sendError(
                     res,
-                    400,
+                    400, // Bad Request
                     'Invalid item id'
                 );
 
@@ -74,7 +81,7 @@ export const itemsRoute = (
 
                 sendError(
                     res,
-                    404,
+                    404, // Not Found
                     'Item not found'
                 );
 
@@ -83,7 +90,7 @@ export const itemsRoute = (
 
             sendSuccess(
                 res,
-                200,
+                200, // Ok
                 item
             );
 
