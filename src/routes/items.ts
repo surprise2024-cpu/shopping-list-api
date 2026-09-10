@@ -71,9 +71,11 @@ export const itemsRoute = (
                     'Invalid item id'
                 );
 
+                // stops the function
                 return;
             }
 
+            // searches for item by its ID
             const item = getItemById(id);
 
             // check if item exists
@@ -98,12 +100,13 @@ export const itemsRoute = (
 
         }
 
-        // Handle POST request to add a new item
+        // Handle POST request to create a new item
         if(req.method === 'POST' && id === undefined) {
 
+            // creates an empty string
             let body = '';
 
-            // Listen for data events to accumulate the request body
+            // Node.js receives incoming request data in small pieces called chuncks
             req.on("data", (chunk) => {
 
                 // Convert the chunk to a string and append it to the body
@@ -111,12 +114,12 @@ export const itemsRoute = (
 
             });
 
-            // Listen for the end event to process the accumulated request body
+            // Runs after Node has finished receiving the entire request body
             req.on('end', () => {
 
                 try {
                     
-                    // Parse the request body as JSON to extract item details
+                    // Turns the JSON text into a JavaScript object
                     const { 
                         name, 
                         quantity, 
@@ -177,7 +180,7 @@ export const itemsRoute = (
 
                     sendSuccess(
                         res,
-                        201,
+                        201, // Created successfully
                         newItem
                     );
 
@@ -200,6 +203,7 @@ export const itemsRoute = (
         // PUT / Updating
         if (req.method === 'PUT' && id !== undefined) {
 
+            // validates ID
             if (
                 !Number.isInteger(id) ||
                 id <= 0
@@ -214,8 +218,10 @@ export const itemsRoute = (
                 return;
             }
 
+            // before updating, first check if the item exists
             const existingItem = getItemById(id);
 
+            // if item does not exist
             if (!existingItem) {
 
                 sendError(
@@ -227,16 +233,21 @@ export const itemsRoute = (
                 return;
             }
 
+            // empty string that stores the incoming update data
             let body = '';
 
+            // listens for pieces of incoming data
             req.on('data', (chunk) => {
-                body += chunk.toString();
+                // turns incoming pieces of data into a text and appends it
+                body += chunk.toString(); 
             });
 
+            // once the entire body has arrived, start processing it
             req.on('end', () => {
 
                 try {
 
+                    // convert request body into a javascript object
                     const {
                         name, 
                         quantity, 
@@ -244,7 +255,7 @@ export const itemsRoute = (
                         
                     } = JSON.parse(body);
 
-                    if (
+                    if (// only validate the name if a new name was provided.
                         name !== undefined &&
                         (
                             typeof name !== 'string' ||
@@ -262,7 +273,7 @@ export const itemsRoute = (
 
                     }
 
-                    if (
+                    if (// only validate the quantity if a new quantity was provided.
                         quantity !== undefined && 
                         (
                             typeof quantity !== 'number' ||
@@ -280,7 +291,7 @@ export const itemsRoute = (
 
                     }
 
-                    if (
+                    if (// if purchased was provided, make sure that it it true/false
                         purchased !== undefined &&
                         typeof purchased !== 'boolean'
                     ) {
@@ -295,6 +306,7 @@ export const itemsRoute = (
 
                     }
 
+                    // where the updating actually takes place
                     const updatedItem = updateItem(
                         id, 
                         name,
@@ -326,6 +338,7 @@ export const itemsRoute = (
         // DELETE /items/:id
         if (req.method === 'DELETE' && id !== undefined) {
 
+            // validate ID
             if (
                 !Number.isInteger(id) ||
                 id <= 0
@@ -341,8 +354,10 @@ export const itemsRoute = (
 
             }
 
+            // call controller to delete specific item by its ID
             const deleted = deleteItem(id);
 
+            // if deletion fails
             if (!deleted) {
 
                 sendError(
@@ -355,14 +370,18 @@ export const itemsRoute = (
 
             }
 
+            // if deletion succeeds set http status to No Content
             res.writeHead(204);
 
+            // finish the http reponse
             res.end();
 
+            // stop processing the request
             return;
 
         }
 
+        // if none of the previous routes matched
         sendError(
             res,
             405,
