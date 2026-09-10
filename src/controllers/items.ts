@@ -11,7 +11,7 @@ export const getAllItems = (): Item[] => {
     return items;
 }
 
-// Function to retrieve an item by its ID
+// Function to retrieve an item by its ID, returns undefined if item is not found
 export const getItemById = (id: number): Item | undefined => {
     const item = items.find((item) => item.id === id);
     return item;
@@ -23,6 +23,8 @@ export const addItem = (
     quantity: number, 
     purchased: boolean = false
  ): Item => {
+
+    // created new object that follows the structure of the Item object
     const newItem: Item = {
         id: currentId++,
         name,
@@ -30,6 +32,7 @@ export const addItem = (
         purchased
     };
 
+    // .push() Adds the new object to the end of the items array
     items.push(newItem);
 
     return newItem;
@@ -43,20 +46,26 @@ export const updateItem = (
     purchased?: boolean
 ): Item | undefined => {
 
+    // Searches for the item whose ID matches the id given to the function
     const item = items.find((item) => item.id === id);
 
+    // checks whether item exists
     if (!item) {
         return undefined;
     }
 
+    // checks whether a new name was actually provided
     if (name !== undefined) {
+        // updates with the new name
         item.name = name;
     }
 
+    // checks whether a new quantity was actually provided
     if (quantity !== undefined) {
         item.quantity = quantity;
     }
 
+    // checks whether a new purchased status was actually provided
     if (purchased !== undefined) {
         item.purchased = purchased;
     }
@@ -67,9 +76,13 @@ export const updateItem = (
 // Function to delete an item
 export const deleteItem = (id: number): boolean => {
 
+    // searches for the postion of the item in the array (items)
     const itemIndex = items.findIndex((item) => item.id === id);
 
+    // itemIndex returns -1 if item wasn't found in the array
     if (itemIndex === -1) {
+        
+        //tells application that nothing was deleted
         return false;
     }
 
