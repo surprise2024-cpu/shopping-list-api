@@ -70,6 +70,8 @@ shopping-list-api
             items.ts
         routes/
             items.ts
+        utils/
+            response.ts
         server.ts
     package-lock.json
     package.json
